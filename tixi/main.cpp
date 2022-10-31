@@ -21,9 +21,8 @@ void initial(vector<vector<float>>& p, int n) {
 }
 
 
-void solution2(vector<vector<short>>& a, vector<vector<short>>& b, int n) {
+void solution2(vector<vector<float>>& a, vector<vector<float>>& b, int n, vector<vector<float>>& res) {
     
-    vector<vector<double>> res(n, vector<double>(n));
         for(int i = 0; i < n; ++i)
             for (int j = 0; j < n; ++j){
                  double sum = 0;
@@ -45,8 +44,7 @@ void solution3(vector < vector < float >> &a, vector<vector<float>>& b, int n, v
 
 }
 
-void solution1(vector<vector<int>>& a, vector<vector<int>>& b, int n) {
-    vector<vector<double>> res(n, vector<double>(n));
+void solution1(vector<vector<float>>& a, vector<vector<float>>& b, int n, vector<vector<float>>& res) {
     for (int j = 0; j < n; ++j)
         for (int k = 0; k < n; ++k)
         {
@@ -515,8 +513,11 @@ int main() {
 
     vector<vector<float>> matrix1(n1, vector<float>(n1));
     vector<vector<float>> matrix2(n1, vector<float>(n1));
-    vector<vector<float>> res(n1, vector<float>(n1));
+    vector<vector<float>> res1(n1, vector<float>(n1));
+    vector<vector<float>> res2(n1, vector<float>(n1));
     vector<vector<float>> res3(n1, vector<float>(n1));
+    vector<vector<float>> res4(n1, vector<float>(n1));
+    vector<vector<float>> res5(n1, vector<float>(n1));
     vector<vector<float>> res6(n1, vector<float>(n1));
     vector<vector<float>> res7(n1, vector<float>(n1));
     vector<vector<float>> res8(n1, vector<float>(n1));
@@ -524,31 +525,23 @@ int main() {
     initial(matrix1, n1);
     initial(matrix2, n1);
    // cout << &matrix1[0][0] << " " << &matrix1[0][1] << endl;
-    /*
+    
     startTime = clock();//计时开始
-    solution1(matrix1,matrix2, n1);
+    solution1(matrix1,matrix2, n1,res1);
     endTime = clock();//计时结束
-    cout << endTime << endl;
-    cout << startTime << endl;
-    cout << "不要局部性The run time is: " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+    cout << "局部性最差The run time is: " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
    
 
-    /*
+    
     startTime = clock();//计时开始
-    solution2(matrix1, matrix2, n1);
+    solution2(matrix1, matrix2, n1,res2);
     endTime = clock();//计时结束
-    cout << endTime << endl;
-    cout << startTime << endl;
     cout << "局部性一般The run time is: " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
-
-        */
 
     startTime = clock();//计时开始
     solution3(matrix1, matrix2, n1,res3);
     endTime = clock();//计时结束
-    cout << endTime << endl;
-    cout << startTime << endl;
-    cout << "局部性较好The run time is: " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+    cout << "局部性最好The run time is: " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
 
     
     /*for (int i = 0; i < n1; i++) {
@@ -566,28 +559,38 @@ int main() {
     endTime = clock();//计时结束
     cout << "12线程The run time is: " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
     
-   
-   /* startTime = clock();//计时开始
-    subs5_1(matrix1, matrix2, n1,0,0,0,0,res5);
-    endTime = clock();//计时结束
-    cout << endTime << endl;
-    cout << startTime << endl;
-    cout << "strassen " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;*/
 
-    mat a = randu<mat>(n1, n1);
-    mat b = randu<mat>(n1, n1);
+
 
     startTime = clock();//计时开始
-    mat c =a* b;
+    solution6(n1,matrix1,matrix2,0,0,0,0,res6);
     endTime = clock();//计时结束
-    cout << endTime << endl;
-    cout << startTime << endl;
-    cout << "strassen " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+    cout << "局部性最好+strassen(64) " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
 
-   // startTime = clock();//计时开始
-   // solution6(n1,matrix1,matrix2,0,0,0,0,res6);
-   // endTime = clock();//计时结束
-   // cout << "局部性+strassen " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+
+
+    startTime = clock();//计时开始
+    solution8(matrix1, matrix2, n1, res7, 0, 0, 0, 0);
+    endTime = clock();//计时结束
+    cout << "AVX2 " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+
+
+    startTime = clock();//计时开始
+    solution10(matrix1, matrix2, n1, res8, 0, 0, 0, 0);
+    endTime = clock();//计时结束
+    cout << "AVX3 " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+
+
+    startTime = clock();//计时开始
+    solution9(n1, matrix1, matrix2, 0, 0, 0, 0, res9);
+    endTime = clock();//计时结束
+    cout << "AVX2+strassen " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+
+    startTime = clock();//计时开始
+    solution7(n1, matrix1, matrix2, 0, 0, 0, 0, res7);
+    endTime = clock();//计时结束
+    cout << "AVX3+strassem" << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+
    /* for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
             cout << res6[i][j]<<" ";
@@ -610,10 +613,7 @@ int main() {
         cout << endl;
     }
     cout << "------------------------------------------------------------------------------------------" << endl;*/
-    startTime = clock();//计时开始
-    solution7(n1, matrix1, matrix2, 0, 0, 0, 0, res7);
-    endTime = clock();//计时结束
-    cout << "AVX3 +strassem" << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+    
    /* for (int i = 0; i < n1; i++) {
         for (int j = 0; j < n1; j++) {
             cout << res7[i][j]<<" ";
@@ -622,10 +622,7 @@ int main() {
     }
     cout << "------------------------------------------------------------------------------------------" << endl;>*/
 
-    startTime = clock();//计时开始
-   // solution8( matrix1, matrix2,n1, res7,0,0,0,0);
-    endTime = clock();//计时结束
-    cout << "AVX2 " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+    
    /* for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
             cout << res8[i][j] << " ";
@@ -633,10 +630,7 @@ int main() {
         cout << endl;
     }*/
 
-    startTime = clock();//计时开始
-    //solution9(n1, matrix1, matrix2, 0, 0, 0, 0, res9);
-    endTime = clock();//计时结束
-    cout << "AVX2+strassen " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+   
    /* for (int i = 0; i < n1; i++) {
         for (int j = 0; j < n1; j++) {
             cout << res9[i][j] << " ";
@@ -644,10 +638,7 @@ int main() {
         cout << endl;
     }*/
 
-    startTime = clock();//计时开始
-    solution10(matrix1, matrix2, n1, res8, 0, 0, 0, 0);
-    endTime = clock();//计时结束
-    cout << "AVX3 " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+   
     /*for (int i = 0; i < n1; i++) {
         for (int j = 0; j < n1; j++) {
             cout << res8[i][j] << " ";
