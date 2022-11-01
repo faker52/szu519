@@ -25,7 +25,7 @@ void solution2(vector<vector<float>>& a, vector<vector<float>>& b, int n, vector
     
         for(int i = 0; i < n; ++i)
             for (int j = 0; j < n; ++j){
-                 double sum = 0;
+                 float sum = 0;
                 for(int k = 0; k < n; ++k)
                          sum += a[i][k] * b[k][j];
                  res[i][j] += sum;
@@ -53,10 +53,6 @@ void solution1(vector<vector<float>>& a, vector<vector<float>>& b, int n, vector
                 res[i][j] += a[i][k] * r;
         }
 
-    
-
-   
-
 }
 //多线程12
 void subs4(vector<vector<float>>& res, vector<vector<float>>& a, vector<vector<float>>& b, int n, int start, int subn) {
@@ -69,33 +65,35 @@ void subs4(vector<vector<float>>& res, vector<vector<float>>& a, vector<vector<f
 
 }
 
-void solution4(vector<vector<float>>& a, vector<vector<float>>& b, int n) {
+void solution4(vector<vector<float>>& a, vector<vector<float>>& b, int n,int k) {
     vector<vector<float>> res(n, vector<float>(n));
-    int subn = n / 12;
-    std::thread th1(subs4, ref(res),ref(a), ref(b), n, 0, subn * 1);
-    std::thread th2(subs4, ref(res), ref(a), ref(b), n, subn * 1, subn * 2);
-    std::thread th3(subs4, ref(res), ref(a), ref(b), n, subn * 2, subn * 3);
-    std::thread th4(subs4, ref(res), ref(a), ref(b), n, subn * 3, subn * 4);
-    std::thread th5(subs4, ref(res), ref(a), ref(b), n, subn * 4, subn * 5);
-    std::thread th6(subs4, ref(res), ref(a), ref(b), n, subn * 5, subn * 6);
-    std::thread th7(subs4, ref(res), ref(a), ref(b), n, subn * 6, subn * 7);
-    std::thread th8(subs4, ref(res), ref(a), ref(b), n, subn * 7, subn * 8);
-    std::thread th9(subs4, ref(res), ref(a), ref(b), n, subn * 8, subn * 9);
-    std::thread th10(subs4, ref(res), ref(a), ref(b), n, subn * 9, subn * 10);
-    std::thread th11(subs4, ref(res), ref(a), ref(b), n, subn * 10, subn * 11);
-    std::thread th12(subs4, ref(res), ref(a), ref(b), n, subn * 11, n);
-    th1.join();
-    th2.join();
-    th3.join();
-    th4.join();
-    th5.join();
-    th6.join();
-    th7.join();
-    th8.join();
-    th9.join();
-    th10.join();
-    th11.join();
-    th12.join();
+    int subn = n / k;
+ 
+        std::thread th1(subs4, ref(res), ref(a), ref(b), n, 0, subn * 1);
+        std::thread th2(subs4, ref(res), ref(a), ref(b), n, subn * 1, subn * 2);
+        std::thread th3(subs4, ref(res), ref(a), ref(b), n, subn * 2, subn * 3);
+        std::thread th4(subs4, ref(res), ref(a), ref(b), n, subn * 3, subn * 4);
+       // std::thread th5(subs4, ref(res), ref(a), ref(b), n, subn * 4, subn * 5);
+       // std::thread th6(subs4, ref(res), ref(a), ref(b), n, subn * 5, subn * 6);
+       // std::thread th7(subs4, ref(res), ref(a), ref(b), n, subn * 6, subn * 7);
+      //  std::thread th8(subs4, ref(res), ref(a), ref(b), n, subn * 7, subn * 8);
+        /*std::thread th9(subs4, ref(res), ref(a), ref(b), n, subn * 8, subn * 9);
+        std::thread th10(subs4, ref(res), ref(a), ref(b), n, subn * 9, subn * 10);
+        std::thread th11(subs4, ref(res), ref(a), ref(b), n, subn * 10, subn * 11);
+        std::thread th12(subs4, ref(res), ref(a), ref(b), n, subn * 11, n);*/
+        th1.join();
+        th2.join();
+        th3.join();
+        th4.join();
+       // th5.join();
+      //  th6.join();
+      //  th7.join();
+      //  th8.join();
+        //th9.join();
+        //th10.join();
+       // th11.join();
+       // th12.join();
+ 
 
    
    
@@ -296,12 +294,12 @@ void solution8(vector<vector<float>>& a, vector<vector<float>>& b, int n, vector
 
 
 //startx为x的起始纵坐标，endx为起始横坐标
-void solution6(int n, vector<vector<float>>& a, vector<vector<float>>& b, int startx, int endx, int starty, int endy, vector<vector<float>>& res) {
+void solution6(int n, vector<vector<float>>& a, vector<vector<float>>& b, int startx, int endx, int starty, int endy, vector<vector<float>>& res,int k) {
     /*if (n == 1) {
         res[0][0] = a[startx][endx] * b[starty][endy];
         return;
     }*/
-    if (n <= 64) {
+    if (n <= k) {
         sub6_3(a, b, n, res, startx, endx, starty, endy);
         return;
     }
@@ -332,13 +330,13 @@ void solution6(int n, vector<vector<float>>& a, vector<vector<float>>& b, int st
     vector<vector<float>> p5(n / 2, vector<float>(n / 2));
     vector<vector<float>> p6(n / 2, vector<float>(n / 2));
     vector<vector<float>> p7(n / 2, vector<float>(n / 2));
-    solution6(n / 2, a, s1, startx, endx, 0, 0, p1);
-    solution6(n / 2, s2, b, 0, 0, starty + n / 2, endy + n / 2, p2);
-    solution6(n / 2, s3, b, 0, 0, starty, endy, p3);
-    solution6(n / 2, a, s4, startx + n / 2, endx + n / 2, 0, 0, p4);
-    solution6(n / 2, s5, s6, 0, 0, 0, 0, p5);
-    solution6(n / 2, s7, s8, 0, 0, 0, 0, p6);
-    solution6(n / 2, s9, s10, 0, 0, 0, 0, p7);
+    solution6(n / 2, a, s1, startx, endx, 0, 0, p1,k);
+    solution6(n / 2, s2, b, 0, 0, starty + n / 2, endy + n / 2, p2,k);
+    solution6(n / 2, s3, b, 0, 0, starty, endy, p3,k);
+    solution6(n / 2, a, s4, startx + n / 2, endx + n / 2, 0, 0, p4,k);
+    solution6(n / 2, s5, s6, 0, 0, 0, 0, p5,k);
+    solution6(n / 2, s7, s8, 0, 0, 0, 0, p6,k);
+    solution6(n / 2, s9, s10, 0, 0, 0, 0, p7,k);
     sub6_11(p5, p4, p2, p6, res, n / 2);
     sub6_12(p1, p2, res, n / 2);
     sub6_21(p3, p4, res, n / 2);
@@ -351,8 +349,8 @@ void solution6(int n, vector<vector<float>>& a, vector<vector<float>>& b, int st
 
 //_mm256_dp_ps
 // _mm256_set_ps
-//_mm256_setzero_ps  __m256 avx_sum0 = _mm256_setzero_ps();
-//_mm256_loadu_ps    r0 = _mm256_loadu_ps(&a[i][k]);
+//_mm256_setzero_ps 
+//_mm256_loadu_ps    
 //_mm256_permute_ps
 // _mm256_blend_ps
 // _mm256_insertf128_ps
@@ -400,12 +398,67 @@ void avx_matrix(vector<vector<float>>& a, vector<vector<float>>& b,vector<vector
 
 }
 
-void solution7(int n, vector<vector<float>>& a, vector<vector<float>>& b, int startx, int endx, int starty, int endy, vector<vector<float>>& res) {
+
+
+void solution11(int n, vector<vector<float>>& a, vector<vector<float>>& b, int startx, int endx, int starty, int endy, vector<vector<float>>& res) {
     /*if (n == 1) {
         res[0][0] = a[startx][endx] * b[starty][endy];
         return;
     }*/
-    if (n <= 512) {
+    if (n <= 8) {
+        avx_matrix(a, b, res, startx, endx, starty, endy);
+        return;
+    }
+    vector<vector<float>> s1(n / 2, vector<float>(n / 2));
+    vector<vector<float>> s2(n / 2, vector<float>(n / 2));
+    vector<vector<float>> s3(n / 2, vector<float>(n / 2));
+    vector<vector<float>> s4(n / 2, vector<float>(n / 2));
+    vector<vector<float>> s5(n / 2, vector<float>(n / 2));
+    vector<vector<float>> s6(n / 2, vector<float>(n / 2));
+    vector<vector<float>> s7(n / 2, vector<float>(n / 2));
+    vector<vector<float>> s8(n / 2, vector<float>(n / 2));
+    vector<vector<float>> s9(n / 2, vector<float>(n / 2));
+    vector<vector<float>> s10(n / 2, vector<float>(n / 2));
+    sub6(b, b, s1, starty, endy + n / 2, starty + n / 2, endy + n / 2, n / 2, -1);
+    sub6(a, a, s2, startx, endx, startx, endx + n / 2, n / 2, 1);
+    sub6(a, a, s3, startx + n / 2, endx, startx + n / 2, endx + n / 2, n / 2, 1);
+    sub6(b, b, s4, starty + n / 2, endy, starty, endy, n / 2, -1);
+    sub6(a, a, s5, startx, endx, startx + n / 2, endx + n / 2, n / 2, 1);
+    sub6(b, b, s6, starty, endy, starty + n / 2, endy + n / 2, n / 2, 1);
+    sub6(a, a, s7, startx, endx + n / 2, startx + n / 2, endx + n / 2, n / 2, -1);
+    sub6(b, b, s8, starty + n / 2, endy, starty + n / 2, endy + n / 2, n / 2, 1);
+    sub6(a, a, s9, startx, endx, startx + n / 2, endx, n / 2, -1);
+    sub6(b, b, s10, starty, endy, starty, endy + n / 2, n / 2, 1);
+    vector<vector<float>> p1(n / 2, vector<float>(n / 2));
+    vector<vector<float>> p2(n / 2, vector<float>(n / 2));
+    vector<vector<float>> p3(n / 2, vector<float>(n / 2));
+    vector<vector<float>> p4(n / 2, vector<float>(n / 2));
+    vector<vector<float>> p5(n / 2, vector<float>(n / 2));
+    vector<vector<float>> p6(n / 2, vector<float>(n / 2));
+    vector<vector<float>> p7(n / 2, vector<float>(n / 2));
+    solution11(n / 2, a, s1, startx, endx, 0, 0, p1);
+    solution11(n / 2, s2, b, 0, 0, starty + n / 2, endy + n / 2, p2);
+    solution11(n / 2, s3, b, 0, 0, starty, endy, p3);
+    solution11(n / 2, a, s4, startx + n / 2, endx + n / 2, 0, 0, p4);
+    solution11(n / 2, s5, s6, 0, 0, 0, 0, p5);
+    solution11(n / 2, s7, s8, 0, 0, 0, 0, p6);
+    solution11(n / 2, s9, s10, 0, 0, 0, 0, p7);
+    sub6_11(p5, p4, p2, p6, res, n / 2);
+    sub6_12(p1, p2, res, n / 2);
+    sub6_21(p3, p4, res, n / 2);
+    sub6_22(p5, p1, p3, p7, res, n / 2);
+
+    return;
+
+
+}
+
+void solution7(int n, vector<vector<float>>& a, vector<vector<float>>& b, int startx, int endx, int starty, int endy, vector<vector<float>>& res,int k) {
+    /*if (n == 1) {
+        res[0][0] = a[startx][endx] * b[starty][endy];
+        return;
+    }*/
+    if (n <= k) {
         solution10(a, b, n, res, startx, endx, starty, endy);
         return;
     }
@@ -436,13 +489,13 @@ void solution7(int n, vector<vector<float>>& a, vector<vector<float>>& b, int st
     vector<vector<float>> p5(n / 2, vector<float>(n / 2));
     vector<vector<float>> p6(n / 2, vector<float>(n / 2));
     vector<vector<float>> p7(n / 2, vector<float>(n / 2));
-    solution7(n / 2, a, s1, startx, endx, 0, 0, p1);
-    solution7(n / 2, s2, b, 0, 0, starty + n / 2, endy + n / 2, p2);
-    solution7(n / 2, s3, b, 0, 0, starty, endy, p3);
-    solution7(n / 2, a, s4, startx + n / 2, endx + n / 2, 0, 0, p4);
-    solution7(n / 2, s5, s6, 0, 0, 0, 0, p5);
-    solution7(n / 2, s7, s8, 0, 0, 0, 0, p6);
-    solution7(n / 2, s9, s10, 0, 0, 0, 0, p7);
+    solution7(n / 2, a, s1, startx, endx, 0, 0, p1,k);
+    solution7(n / 2, s2, b, 0, 0, starty + n / 2, endy + n / 2, p2,k);
+    solution7(n / 2, s3, b, 0, 0, starty, endy, p3,k);
+    solution7(n / 2, a, s4, startx + n / 2, endx + n / 2, 0, 0, p4,k);
+    solution7(n / 2, s5, s6, 0, 0, 0, 0, p5,k);
+    solution7(n / 2, s7, s8, 0, 0, 0, 0, p6,k);
+    solution7(n / 2, s9, s10, 0, 0, 0, 0, p7,k);
     sub6_11(p5, p4, p2, p6, res, n / 2);
     sub6_12(p1, p2, res, n / 2);
     sub6_21(p3, p4, res, n / 2);
@@ -452,12 +505,12 @@ void solution7(int n, vector<vector<float>>& a, vector<vector<float>>& b, int st
 
 
 }
-void solution9(int n, vector<vector<float>>& a, vector<vector<float>>& b, int startx, int endx, int starty, int endy, vector<vector<float>>& res) {
+void solution9(int n, vector<vector<float>>& a, vector<vector<float>>& b, int startx, int endx, int starty, int endy, vector<vector<float>>& res,int k) {
     /*if (n == 1) {
         res[0][0] = a[startx][endx] * b[starty][endy];
         return;
     }*/
-    if (n <= 64) {
+    if (n <= k) {
         solution8(a, b, n,res, startx, endx, starty, endy);
         return;
     }
@@ -488,13 +541,13 @@ void solution9(int n, vector<vector<float>>& a, vector<vector<float>>& b, int st
     vector<vector<float>> p5(n / 2, vector<float>(n / 2));
     vector<vector<float>> p6(n / 2, vector<float>(n / 2));
     vector<vector<float>> p7(n / 2, vector<float>(n / 2));
-    solution9(n / 2, a, s1, startx, endx, 0, 0, p1);
-    solution9(n / 2, s2, b, 0, 0, starty + n / 2, endy + n / 2, p2);
-    solution9(n / 2, s3, b, 0, 0, starty, endy, p3);
-    solution9(n / 2, a, s4, startx + n / 2, endx + n / 2, 0, 0, p4);
-    solution9(n / 2, s5, s6, 0, 0, 0, 0, p5);
-    solution9(n / 2, s7, s8, 0, 0, 0, 0, p6);
-    solution9(n / 2, s9, s10, 0, 0, 0, 0, p7);
+    solution9(n / 2, a, s1, startx, endx, 0, 0, p1,k);
+    solution9(n / 2, s2, b, 0, 0, starty + n / 2, endy + n / 2, p2,k);
+    solution9(n / 2, s3, b, 0, 0, starty, endy, p3,k);
+    solution9(n / 2, a, s4, startx + n / 2, endx + n / 2, 0, 0, p4,k);
+    solution9(n / 2, s5, s6, 0, 0, 0, 0, p5,k);
+    solution9(n / 2, s7, s8, 0, 0, 0, 0, p6,k);
+    solution9(n / 2, s9, s10, 0, 0, 0, 0, p7,k);
     sub6_11(p5, p4, p2, p6, res, n / 2);
     sub6_12(p1, p2, res, n / 2);
     sub6_21(p3, p4, res, n / 2);
@@ -507,54 +560,84 @@ void solution9(int n, vector<vector<float>>& a, vector<vector<float>>& b, int st
 
 
 int main() {
-    clock_t startTime, endTime;
 
-    int n1 = 1024;
+    for (int n1 = 8; n1 <= 2048; n1 *= 2) {
+        clock_t startTime, endTime;
 
-    vector<vector<float>> matrix1(n1, vector<float>(n1));
-    vector<vector<float>> matrix2(n1, vector<float>(n1));
-    vector<vector<float>> res1(n1, vector<float>(n1));
-    vector<vector<float>> res2(n1, vector<float>(n1));
-    vector<vector<float>> res3(n1, vector<float>(n1));
-    vector<vector<float>> res4(n1, vector<float>(n1));
-    vector<vector<float>> res5(n1, vector<float>(n1));
-    vector<vector<float>> res6(n1, vector<float>(n1));
-    vector<vector<float>> res7(n1, vector<float>(n1));
-    vector<vector<float>> res8(n1, vector<float>(n1));
-    vector<vector<float>> res9(n1, vector<float>(n1));
-    initial(matrix1, n1);
-    initial(matrix2, n1);
-   // cout << &matrix1[0][0] << " " << &matrix1[0][1] << endl;
-    
-    startTime = clock();//计时开始
-    solution1(matrix1,matrix2, n1,res1);
-    endTime = clock();//计时结束
-    cout << "局部性最差The run time is: " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
-   
 
-    
-    startTime = clock();//计时开始
-    solution2(matrix1, matrix2, n1,res2);
-    endTime = clock();//计时结束
-    cout << "局部性一般The run time is: " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+        vector<vector<float>> matrix1(n1, vector<float>(n1));
+        vector<vector<float>> matrix2(n1, vector<float>(n1));
+        vector<vector<float>> res1(n1, vector<float>(n1));
+        vector<vector<float>> res2(n1, vector<float>(n1));
+        vector<vector<float>> res3(n1, vector<float>(n1));
+        vector<vector<float>> res4(n1, vector<float>(n1));
+        vector<vector<float>> res5(n1, vector<float>(n1));
+        vector<vector<float>> res6(n1, vector<float>(n1));
+        vector<vector<float>> res7(n1, vector<float>(n1));
+        vector<vector<float>> res8(n1, vector<float>(n1));
+        vector<vector<float>> res9(n1, vector<float>(n1));
+        vector<vector<float>> res10(n1, vector<float>(n1));
+        vector<vector<float>> res11(n1, vector<float>(n1));
+        cout << "----------------------n="<<n1<<"-------------------------- - " << endl;
+        initial(matrix1, n1);
+        initial(matrix2, n1);
+        startTime = clock();//计时开始
+        solution1(matrix1, matrix2, n1, res1);
+        endTime = clock();//计时结束
+        cout<< "局部性最差The run time is : " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
 
-    startTime = clock();//计时开始
-    solution3(matrix1, matrix2, n1,res3);
-    endTime = clock();//计时结束
-    cout << "局部性最好The run time is: " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+        startTime = clock();//计时开始
+        solution2(matrix1, matrix2, n1, res2);
+        endTime = clock();//计时结束
+        cout << n1 << "局部性一般The run time is: " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
 
-    
-    /*for (int i = 0; i < n1; i++) {
-        for (int j = 0; j < n1;j++) {
-            cout << res3[i][j] << " ";
-        }
-        cout << endl;
+        startTime = clock();//计时开始
+        solution3(matrix1, matrix2, n1, res3);
+        endTime = clock();//计时结束
+        cout << n1 << "局部性最好The run time is: " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+
+        startTime = clock();//计时开始
+        solution8(matrix1, matrix2, n1, res7, 0, 0, 0, 0);
+        endTime = clock();//计时结束
+        cout << "AVX2 " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+
+
+        startTime = clock();//计时开始
+        solution10(matrix1, matrix2, n1, res8, 0, 0, 0, 0);
+        endTime = clock();//计时结束
+        cout << "AVX3 " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+        startTime = clock();//计时开始
+        solution6(n1, matrix1, matrix2, 0, 0, 0, 0, res6, 64);
+        endTime = clock();//计时结束
+        cout << "局部性最好+strassen" <<n1<< "time:" << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+
+
+        startTime = clock();//计时开始
+        solution9(n1, matrix1, matrix2, 0, 0, 0, 0, res9,128);
+        endTime = clock();//计时结束
+        cout << "AVX2+strassen " << n1 << "time:" << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+
+        startTime = clock();//计时开始
+        solution7(n1, matrix1, matrix2, 0, 0, 0, 0, res7,256);
+        endTime = clock();//计时结束
+        cout << "AVX3+strassem" << n1 << "time:" << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+
+        startTime = clock();//计时开始
+        solution4(matrix1, matrix2, n1,4);
+        endTime = clock();//计时结束
+        cout << "12线程The run time is: " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+            
+
     }
-    cout << "------------------------------------------------------------------------------------------" << endl;*/
 
- 
 
-    startTime = clock();//计时开始
+    /*
+     startTime = clock();//计时开始
+            solution11(n1, matrix1, matrix2, 0, 0, 0, 0, res11);
+            endTime = clock();//计时结束
+            cout << "AVX1+strassem" << k << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;*/
+
+  /*  startTime = clock();//计时开始
     solution4(matrix1, matrix2, n1);
     endTime = clock();//计时结束
     cout << "12线程The run time is: " << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
@@ -589,62 +672,8 @@ int main() {
     startTime = clock();//计时开始
     solution7(n1, matrix1, matrix2, 0, 0, 0, 0, res7);
     endTime = clock();//计时结束
-    cout << "AVX3+strassem" << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+    cout << "AVX3+strassem" << (double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;*/
 
-   /* for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            cout << res6[i][j]<<" ";
-        }
-        cout << endl;
-    }*/
-    /*cout << "------------------------------------------------------------------------------------------" << endl;
-    
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            cout << matrix1[i][j] << " ";
-        }
-        cout << endl;
-    }
-    cout << "------------------------------------------------------------------------------------------" << endl;
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            cout << matrix2[i][j] << " ";
-        }
-        cout << endl;
-    }
-    cout << "------------------------------------------------------------------------------------------" << endl;*/
-    
-   /* for (int i = 0; i < n1; i++) {
-        for (int j = 0; j < n1; j++) {
-            cout << res7[i][j]<<" ";
-        }
-        cout << endl;
-    }
-    cout << "------------------------------------------------------------------------------------------" << endl;>*/
-
-    
-   /* for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            cout << res8[i][j] << " ";
-        }
-        cout << endl;
-    }*/
-
-   
-   /* for (int i = 0; i < n1; i++) {
-        for (int j = 0; j < n1; j++) {
-            cout << res9[i][j] << " ";
-        }
-        cout << endl;
-    }*/
-
-   
-    /*for (int i = 0; i < n1; i++) {
-        for (int j = 0; j < n1; j++) {
-            cout << res8[i][j] << " ";
-        }
-        cout << endl;
-    }*/
     
     return 0;
 }
